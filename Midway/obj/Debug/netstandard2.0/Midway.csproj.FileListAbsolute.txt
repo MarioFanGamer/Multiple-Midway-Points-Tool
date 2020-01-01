@@ -1,0 +1,8 @@
+D:\Developer\MMP\Midway\obj\Debug\netstandard2.0\Midway.csprojAssemblyReference.cache
+D:\Developer\MMP\Midway\obj\Debug\netstandard2.0\Midway.AssemblyInfoInputs.cache
+D:\Developer\MMP\Midway\obj\Debug\netstandard2.0\Midway.AssemblyInfo.cs
+D:\Developer\MMP\Midway\bin\Debug\netstandard2.0\Midway.deps.json
+D:\Developer\MMP\Midway\bin\Debug\netstandard2.0\Midway.dll
+D:\Developer\MMP\Midway\bin\Debug\netstandard2.0\Midway.pdb
+D:\Developer\MMP\Midway\obj\Debug\netstandard2.0\Midway.dll
+D:\Developer\MMP\Midway\obj\Debug\netstandard2.0\Midway.pdb

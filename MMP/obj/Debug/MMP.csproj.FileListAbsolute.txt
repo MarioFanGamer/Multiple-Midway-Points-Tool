@@ -1,0 +1,12 @@
+D:\Developer\MMP\MMP\bin\Debug\MMP.exe.config
+D:\Developer\MMP\MMP\bin\Debug\MMP.exe
+D:\Developer\MMP\MMP\bin\Debug\MMP.pdb
+D:\Developer\MMP\MMP\obj\Debug\MMP.csprojAssemblyReference.cache
+D:\Developer\MMP\MMP\obj\Debug\MMP.MainWindow.resources
+D:\Developer\MMP\MMP\obj\Debug\MMP.Properties.Resources.resources
+D:\Developer\MMP\MMP\obj\Debug\MMP.csproj.GenerateResource.cache
+D:\Developer\MMP\MMP\obj\Debug\MMP.exe
+D:\Developer\MMP\MMP\obj\Debug\MMP.pdb
+D:\Developer\MMP\MMP\obj\Debug\MMP.csproj.CopyComplete
+D:\Developer\MMP\MMP\bin\Debug\Midway.dll
+D:\Developer\MMP\MMP\bin\Debug\Midway.pdb
