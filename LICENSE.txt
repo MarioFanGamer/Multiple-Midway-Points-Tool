@@ -1,0 +1,8 @@
+This software is made in three components:
+- MMP.exe: The main program
+- Midway.dll: The kernel
+- Asar.dll: The 65c816 assembler made by Alcaro
+
+The software as a whole (except Asar.dll which belongs to Alcaro) and the source code of MMP.exe is released under the GNU General Public License v3. You can find the license under licenses/license-gpl.exe.
+Midway.dll is licensed under GNU Lesser General Public License v3. You can find the license under licenses/license-lgpl.txt.
+Asar.dll doesn't belong to me, MarioFanGamer, but rather to the aforementioned Alcaro. You can see its license in licenses/license-asar.txt.
