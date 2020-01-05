@@ -43,9 +43,9 @@
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.destinationIndex = new System.Windows.Forms.NumericUpDown();
             this.waterLevel = new System.Windows.Forms.CheckBox();
             this.secondaryLevel = new System.Windows.Forms.CheckBox();
-            this.destinationBox = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -56,10 +56,16 @@
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.patchRom = new System.Windows.Forms.Button();
             this.levelNum = new System.Windows.Forms.ComboBox();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.midwayNum = new System.Windows.Forms.NumericUpDown();
+            this.saveMmpDialog = new System.Windows.Forms.SaveFileDialog();
+            this.openMmpDialog = new System.Windows.Forms.OpenFileDialog();
+            this.exportAsmDialog = new System.Windows.Forms.SaveFileDialog();
+            this.importAsmDialog = new System.Windows.Forms.OpenFileDialog();
+            this.patchRomDialog = new System.Windows.Forms.OpenFileDialog();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.destinationIndex)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.midwayNum)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -94,12 +100,14 @@
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
             this.openToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
             this.openToolStripMenuItem.Text = "&Open Midway Points";
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
             this.saveToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
             this.saveToolStripMenuItem.Text = "&Save Midway Points";
+            this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
@@ -111,12 +119,14 @@
             this.importToolStripMenuItem.Name = "importToolStripMenuItem";
             this.importToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
             this.importToolStripMenuItem.Text = "&Import from ASM File";
+            this.importToolStripMenuItem.Click += new System.EventHandler(this.importToolStripMenuItem_Click);
             // 
             // exportToolStripMenuItem
             // 
             this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
             this.exportToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
             this.exportToolStripMenuItem.Text = "&Export to ASM File";
+            this.exportToolStripMenuItem.Click += new System.EventHandler(this.exportToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
@@ -128,6 +138,7 @@
             this.patchROMToolStripMenuItem.Name = "patchROMToolStripMenuItem";
             this.patchROMToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
             this.patchROMToolStripMenuItem.Text = "Patch to ROM";
+            this.patchROMToolStripMenuItem.Click += new System.EventHandler(this.patchROMToolStripMenuItem_Click);
             // 
             // toolStripSeparator3
             // 
@@ -139,6 +150,7 @@
             this.quitToolStripMenuItem.Name = "quitToolStripMenuItem";
             this.quitToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
             this.quitToolStripMenuItem.Text = "&Quit";
+            this.quitToolStripMenuItem.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -151,14 +163,15 @@
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.aboutToolStripMenuItem.Text = "About";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.destinationIndex);
             this.groupBox1.Controls.Add(this.waterLevel);
             this.groupBox1.Controls.Add(this.secondaryLevel);
-            this.groupBox1.Controls.Add(this.destinationBox);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Location = new System.Drawing.Point(12, 67);
             this.groupBox1.Name = "groupBox1";
@@ -166,6 +179,20 @@
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Settings";
+            // 
+            // destinationIndex
+            // 
+            this.destinationIndex.Hexadecimal = true;
+            this.destinationIndex.Location = new System.Drawing.Point(9, 33);
+            this.destinationIndex.Maximum = new decimal(new int[] {
+            511,
+            0,
+            0,
+            0});
+            this.destinationIndex.Name = "destinationIndex";
+            this.destinationIndex.Size = new System.Drawing.Size(200, 20);
+            this.destinationIndex.TabIndex = 5;
+            this.destinationIndex.ValueChanged += new System.EventHandler(this.destinationIndex_ValueChanged);
             // 
             // waterLevel
             // 
@@ -177,6 +204,7 @@
             this.waterLevel.TabIndex = 2;
             this.waterLevel.Text = "Water Level";
             this.waterLevel.UseVisualStyleBackColor = true;
+            this.waterLevel.CheckedChanged += new System.EventHandler(this.waterLevel_CheckedChanged);
             // 
             // secondaryLevel
             // 
@@ -187,14 +215,7 @@
             this.secondaryLevel.TabIndex = 1;
             this.secondaryLevel.Text = "Secondary";
             this.secondaryLevel.UseVisualStyleBackColor = true;
-            // 
-            // destinationBox
-            // 
-            this.destinationBox.FormattingEnabled = true;
-            this.destinationBox.Location = new System.Drawing.Point(6, 32);
-            this.destinationBox.Name = "destinationBox";
-            this.destinationBox.Size = new System.Drawing.Size(203, 21);
-            this.destinationBox.TabIndex = 0;
+            this.secondaryLevel.CheckedChanged += new System.EventHandler(this.secondaryLevel_CheckedChanged);
             // 
             // label3
             // 
@@ -231,6 +252,7 @@
             this.saveSettings.TabIndex = 3;
             this.saveSettings.Text = "Save Settings";
             this.saveSettings.UseVisualStyleBackColor = true;
+            this.saveSettings.Click += new System.EventHandler(this.saveSettings_Click);
             // 
             // loadSettings
             // 
@@ -240,6 +262,7 @@
             this.loadSettings.TabIndex = 3;
             this.loadSettings.Text = "Load Settings";
             this.loadSettings.UseVisualStyleBackColor = true;
+            this.loadSettings.Click += new System.EventHandler(this.loadSettings_Click);
             // 
             // exportASM
             // 
@@ -249,6 +272,7 @@
             this.exportASM.TabIndex = 3;
             this.exportASM.Text = "Export ASM";
             this.exportASM.UseVisualStyleBackColor = true;
+            this.exportASM.Click += new System.EventHandler(this.exportASM_Click);
             // 
             // importASM
             // 
@@ -258,6 +282,7 @@
             this.importASM.TabIndex = 3;
             this.importASM.Text = "Import ASM";
             this.importASM.UseVisualStyleBackColor = true;
+            this.importASM.Click += new System.EventHandler(this.importASM_Click);
             // 
             // patchRom
             // 
@@ -267,28 +292,60 @@
             this.patchRom.TabIndex = 3;
             this.patchRom.Text = "Patch ROM";
             this.patchRom.UseVisualStyleBackColor = true;
+            this.patchRom.Click += new System.EventHandler(this.patchRom_Click);
             // 
             // levelNum
             // 
+            this.levelNum.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.levelNum.FormattingEnabled = true;
             this.levelNum.Location = new System.Drawing.Point(12, 40);
             this.levelNum.Name = "levelNum";
             this.levelNum.Size = new System.Drawing.Size(105, 21);
             this.levelNum.TabIndex = 4;
+            this.levelNum.SelectedIndexChanged += new System.EventHandler(this.levelNum_SelectedIndexChanged);
             // 
-            // numericUpDown1
+            // midwayNum
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(124, 40);
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(103, 20);
-            this.numericUpDown1.TabIndex = 5;
+            this.midwayNum.Hexadecimal = true;
+            this.midwayNum.Location = new System.Drawing.Point(124, 40);
+            this.midwayNum.Name = "midwayNum";
+            this.midwayNum.Size = new System.Drawing.Size(103, 20);
+            this.midwayNum.TabIndex = 5;
+            this.midwayNum.ValueChanged += new System.EventHandler(this.midwayNum_ValueChanged);
+            // 
+            // saveMmpDialog
+            // 
+            this.saveMmpDialog.DefaultExt = "mmp";
+            this.saveMmpDialog.Filter = "Multiple Midway Point Files (.mpp)|*.mmp|Binary Files (.bin)|*.bin|All Files|*.*";
+            // 
+            // openMmpDialog
+            // 
+            this.openMmpDialog.DefaultExt = "mmp";
+            this.openMmpDialog.Filter = "Multiple Midway Point Files (.mpp)|*.mmp|Binary Files (.bin)|*.bin|All Files|*.*";
+            // 
+            // exportAsmDialog
+            // 
+            this.exportAsmDialog.DefaultExt = "asm";
+            this.exportAsmDialog.FileName = "multi_midway_tables.asm";
+            this.exportAsmDialog.Filter = "65c816 ASM File (.asm)|.asm|All Files|*.*";
+            // 
+            // importAsmDialog
+            // 
+            this.importAsmDialog.DefaultExt = "asm";
+            this.importAsmDialog.FileName = "multi_midway_tables.asm";
+            this.importAsmDialog.Filter = "65c816 ASM File (.asm)|.asm|All Files|*.*";
+            // 
+            // patchRomDialog
+            // 
+            this.patchRomDialog.FileName = "openFileDialog1";
+            this.patchRomDialog.Filter = "SNES ROM image (.sfc, .smc)|*.sfc;*smc|All Files|*.*";
             // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(239, 271);
-            this.Controls.Add(this.numericUpDown1);
+            this.Controls.Add(this.midwayNum);
             this.Controls.Add(this.levelNum);
             this.Controls.Add(this.importASM);
             this.Controls.Add(this.patchRom);
@@ -299,14 +356,18 @@
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MainMenuStrip = this.menuStrip1;
+            this.MaximizeBox = false;
             this.Name = "MainWindow";
-            this.Text = "Form1";
+            this.ShowIcon = false;
+            this.Text = "MMP Tool";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.destinationIndex)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.midwayNum)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -330,7 +391,6 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.CheckBox waterLevel;
         private System.Windows.Forms.CheckBox secondaryLevel;
-        private System.Windows.Forms.ComboBox destinationBox;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
@@ -341,7 +401,13 @@
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Button patchRom;
         private System.Windows.Forms.ComboBox levelNum;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.NumericUpDown midwayNum;
+        private System.Windows.Forms.NumericUpDown destinationIndex;
+        private System.Windows.Forms.SaveFileDialog saveMmpDialog;
+        private System.Windows.Forms.OpenFileDialog openMmpDialog;
+        private System.Windows.Forms.SaveFileDialog exportAsmDialog;
+        private System.Windows.Forms.OpenFileDialog importAsmDialog;
+        private System.Windows.Forms.OpenFileDialog patchRomDialog;
     }
 }
 

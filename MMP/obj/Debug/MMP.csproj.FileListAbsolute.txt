@@ -10,3 +10,5 @@ D:\Developer\MMP\MMP\obj\Debug\MMP.pdb
 D:\Developer\MMP\MMP\obj\Debug\MMP.csproj.CopyComplete
 D:\Developer\MMP\MMP\bin\Debug\Midway.dll
 D:\Developer\MMP\MMP\bin\Debug\Midway.pdb
+D:\Developer\MMP\MMP\obj\Debug\MMP.About.resources
+D:\Developer\MMP\MMP\bin\Debug\asar.dll
