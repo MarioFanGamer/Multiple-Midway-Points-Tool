@@ -18,4 +18,3 @@ Some standards to keep in mind:
 Each .mmp file starts with a six byte header. That header is "MMP" + major version + minor version + bugfix version (the version number is a single byte each).
 Let's say, you have Midway.dll in Version 1.1.0. In that case, the header is (starts with) 4D 4D 50 01 01 01 ("MMP" + 1.1.0).
 Next, each midway point is stored as two bytes of the destination number (little endian), secondary exit flag and water level flag (four bytes in total). There is no midway point counter but the size of that file is so minimal compared to a single HDD (it shouldn't even surpass your ROM size), not to mention the size of each midway point array is fixed (96 levels by 256 midway points).
-Finally, the array is a 96 by 256 matrix.
