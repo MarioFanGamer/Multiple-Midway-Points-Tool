@@ -28,17 +28,17 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveMidwayPointsAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.loadROMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.patchROMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.resetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -50,10 +50,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.saveSettings = new System.Windows.Forms.Button();
-            this.loadSettings = new System.Windows.Forms.Button();
-            this.exportASM = new System.Windows.Forms.Button();
-            this.importASM = new System.Windows.Forms.Button();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.patchRom = new System.Windows.Forms.Button();
             this.levelNum = new System.Windows.Forms.ComboBox();
             this.midwayNum = new System.Windows.Forms.NumericUpDown();
@@ -62,6 +58,8 @@
             this.exportAsmDialog = new System.Windows.Forms.SaveFileDialog();
             this.importAsmDialog = new System.Windows.Forms.OpenFileDialog();
             this.patchRomDialog = new System.Windows.Forms.OpenFileDialog();
+            this.loadROM = new System.Windows.Forms.Button();
+            this.loadSettings = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.destinationIndex)).BeginInit();
@@ -82,73 +80,80 @@
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.openToolStripMenuItem,
             this.saveToolStripMenuItem,
+            this.saveMidwayPointsAsToolStripMenuItem,
+            this.openToolStripMenuItem,
             this.toolStripSeparator1,
-            this.importToolStripMenuItem,
-            this.exportToolStripMenuItem,
-            this.toolStripSeparator2,
+            this.loadROMToolStripMenuItem,
             this.patchROMToolStripMenuItem,
             this.toolStripSeparator3,
+            this.resetToolStripMenuItem,
+            this.toolStripSeparator4,
             this.quitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
-            // openToolStripMenuItem
-            // 
-            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
-            this.openToolStripMenuItem.Text = "&Open Midway Points";
-            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
-            // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
             this.saveToolStripMenuItem.Text = "&Save Midway Points";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
+            // 
+            // saveMidwayPointsAsToolStripMenuItem
+            // 
+            this.saveMidwayPointsAsToolStripMenuItem.Name = "saveMidwayPointsAsToolStripMenuItem";
+            this.saveMidwayPointsAsToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
+            this.saveMidwayPointsAsToolStripMenuItem.Text = "Save Midway Points as...";
+            this.saveMidwayPointsAsToolStripMenuItem.Click += new System.EventHandler(this.saveMidwayPointsAsToolStripMenuItem_Click);
+            // 
+            // openToolStripMenuItem
+            // 
+            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
+            this.openToolStripMenuItem.Text = "&Open Midway Points";
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(185, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(199, 6);
             // 
-            // importToolStripMenuItem
+            // loadROMToolStripMenuItem
             // 
-            this.importToolStripMenuItem.Name = "importToolStripMenuItem";
-            this.importToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
-            this.importToolStripMenuItem.Text = "&Import from ASM File";
-            this.importToolStripMenuItem.Click += new System.EventHandler(this.importToolStripMenuItem_Click);
-            // 
-            // exportToolStripMenuItem
-            // 
-            this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
-            this.exportToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
-            this.exportToolStripMenuItem.Text = "&Export to ASM File";
-            this.exportToolStripMenuItem.Click += new System.EventHandler(this.exportToolStripMenuItem_Click);
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(185, 6);
+            this.loadROMToolStripMenuItem.Name = "loadROMToolStripMenuItem";
+            this.loadROMToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
+            this.loadROMToolStripMenuItem.Text = "Load ROM";
             // 
             // patchROMToolStripMenuItem
             // 
             this.patchROMToolStripMenuItem.Name = "patchROMToolStripMenuItem";
-            this.patchROMToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
+            this.patchROMToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
             this.patchROMToolStripMenuItem.Text = "Patch to ROM";
             this.patchROMToolStripMenuItem.Click += new System.EventHandler(this.patchROMToolStripMenuItem_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(185, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(199, 6);
+            // 
+            // resetToolStripMenuItem
+            // 
+            this.resetToolStripMenuItem.Name = "resetToolStripMenuItem";
+            this.resetToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
+            this.resetToolStripMenuItem.Text = "Reset";
+            this.resetToolStripMenuItem.Click += new System.EventHandler(this.resetToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(199, 6);
             // 
             // quitToolStripMenuItem
             // 
             this.quitToolStripMenuItem.Name = "quitToolStripMenuItem";
-            this.quitToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
+            this.quitToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
             this.quitToolStripMenuItem.Text = "&Quit";
             this.quitToolStripMenuItem.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
             // 
@@ -163,7 +168,7 @@
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -246,7 +251,7 @@
             // 
             // saveSettings
             // 
-            this.saveSettings.Location = new System.Drawing.Point(12, 178);
+            this.saveSettings.Location = new System.Drawing.Point(123, 178);
             this.saveSettings.Name = "saveSettings";
             this.saveSettings.Size = new System.Drawing.Size(105, 23);
             this.saveSettings.TabIndex = 3;
@@ -254,39 +259,9 @@
             this.saveSettings.UseVisualStyleBackColor = true;
             this.saveSettings.Click += new System.EventHandler(this.saveSettings_Click);
             // 
-            // loadSettings
-            // 
-            this.loadSettings.Location = new System.Drawing.Point(123, 178);
-            this.loadSettings.Name = "loadSettings";
-            this.loadSettings.Size = new System.Drawing.Size(104, 23);
-            this.loadSettings.TabIndex = 3;
-            this.loadSettings.Text = "Load Settings";
-            this.loadSettings.UseVisualStyleBackColor = true;
-            this.loadSettings.Click += new System.EventHandler(this.loadSettings_Click);
-            // 
-            // exportASM
-            // 
-            this.exportASM.Location = new System.Drawing.Point(12, 207);
-            this.exportASM.Name = "exportASM";
-            this.exportASM.Size = new System.Drawing.Size(105, 23);
-            this.exportASM.TabIndex = 3;
-            this.exportASM.Text = "Export ASM";
-            this.exportASM.UseVisualStyleBackColor = true;
-            this.exportASM.Click += new System.EventHandler(this.exportASM_Click);
-            // 
-            // importASM
-            // 
-            this.importASM.Location = new System.Drawing.Point(123, 207);
-            this.importASM.Name = "importASM";
-            this.importASM.Size = new System.Drawing.Size(105, 23);
-            this.importASM.TabIndex = 3;
-            this.importASM.Text = "Import ASM";
-            this.importASM.UseVisualStyleBackColor = true;
-            this.importASM.Click += new System.EventHandler(this.importASM_Click);
-            // 
             // patchRom
             // 
-            this.patchRom.Location = new System.Drawing.Point(12, 236);
+            this.patchRom.Location = new System.Drawing.Point(123, 207);
             this.patchRom.Name = "patchRom";
             this.patchRom.Size = new System.Drawing.Size(105, 23);
             this.patchRom.TabIndex = 3;
@@ -316,41 +291,62 @@
             // saveMmpDialog
             // 
             this.saveMmpDialog.DefaultExt = "mmp";
-            this.saveMmpDialog.Filter = "Multiple Midway Point Files (.mpp)|*.mmp|Binary Files (.bin)|*.bin|All Files|*.*";
+            this.saveMmpDialog.Filter = "Multiple Midway Point Files (.mpp)|*.mmp|Binary Files (.bin)|*.bin|ASM Files|*.as" +
+    "m|Text Files|*.txt|All Files|*.*";
             // 
             // openMmpDialog
             // 
             this.openMmpDialog.DefaultExt = "mmp";
-            this.openMmpDialog.Filter = "Multiple Midway Point Files (.mpp)|*.mmp|Binary Files (.bin)|*.bin|All Files|*.*";
+            this.openMmpDialog.Filter = "Multiple Midway Point Files (.mpp, .bin)|*.mmp;*.bin|ASM/Text Files (.asm, .txt)|" +
+    "*.asm;*.txt|All Files|*.*";
             // 
             // exportAsmDialog
             // 
             this.exportAsmDialog.DefaultExt = "asm";
             this.exportAsmDialog.FileName = "multi_midway_tables.asm";
-            this.exportAsmDialog.Filter = "65c816 ASM File (.asm)|.asm|All Files|*.*";
+            this.exportAsmDialog.Filter = "Multiple Midway Point Files (.mpp, .bin)|*.mmp;*.bin|ASM/Text Files (.asm, .txt)|" +
+    "*.asm;*.txt|All Files|*.*";
             // 
             // importAsmDialog
             // 
             this.importAsmDialog.DefaultExt = "asm";
             this.importAsmDialog.FileName = "multi_midway_tables.asm";
-            this.importAsmDialog.Filter = "65c816 ASM File (.asm)|.asm|All Files|*.*";
+            this.importAsmDialog.Filter = "65c816 ASM File (.asm)|*.asm|All Files|*.*";
             // 
             // patchRomDialog
             // 
-            this.patchRomDialog.FileName = "openFileDialog1";
             this.patchRomDialog.Filter = "SNES ROM image (.sfc, .smc)|*.sfc;*smc|All Files|*.*";
+            // 
+            // loadROM
+            // 
+            this.loadROM.Location = new System.Drawing.Point(12, 207);
+            this.loadROM.Name = "loadROM";
+            this.loadROM.Size = new System.Drawing.Size(105, 23);
+            this.loadROM.TabIndex = 7;
+            this.loadROM.Text = "Load ROM";
+            this.loadROM.UseVisualStyleBackColor = true;
+            this.loadROM.Click += new System.EventHandler(this.loadROM_Click);
+            // 
+            // loadSettings
+            // 
+            this.loadSettings.Location = new System.Drawing.Point(12, 178);
+            this.loadSettings.Name = "loadSettings";
+            this.loadSettings.Size = new System.Drawing.Size(105, 23);
+            this.loadSettings.TabIndex = 8;
+            this.loadSettings.Text = "Load Settings";
+            this.loadSettings.UseVisualStyleBackColor = true;
+            this.loadSettings.Click += new System.EventHandler(this.loadSettings_Click);
             // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(239, 271);
+            this.ClientSize = new System.Drawing.Size(239, 242);
+            this.Controls.Add(this.loadROM);
+            this.Controls.Add(this.loadSettings);
             this.Controls.Add(this.midwayNum);
             this.Controls.Add(this.levelNum);
-            this.Controls.Add(this.importASM);
             this.Controls.Add(this.patchRom);
-            this.Controls.Add(this.exportASM);
-            this.Controls.Add(this.loadSettings);
             this.Controls.Add(this.saveSettings);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.menuStrip1);
@@ -362,6 +358,7 @@
             this.Name = "MainWindow";
             this.ShowIcon = false;
             this.Text = "MMP Tool";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainWindow_FormClosing);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.groupBox1.ResumeLayout(false);
@@ -380,9 +377,6 @@
         private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripMenuItem importToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem quitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem patchROMToolStripMenuItem;
@@ -395,10 +389,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button saveSettings;
-        private System.Windows.Forms.Button loadSettings;
-        private System.Windows.Forms.Button exportASM;
-        private System.Windows.Forms.Button importASM;
-        private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Button patchRom;
         private System.Windows.Forms.ComboBox levelNum;
         private System.Windows.Forms.NumericUpDown midwayNum;
@@ -408,6 +398,12 @@
         private System.Windows.Forms.SaveFileDialog exportAsmDialog;
         private System.Windows.Forms.OpenFileDialog importAsmDialog;
         private System.Windows.Forms.OpenFileDialog patchRomDialog;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.ToolStripMenuItem resetToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveMidwayPointsAsToolStripMenuItem;
+        private System.Windows.Forms.Button loadROM;
+        private System.Windows.Forms.Button loadSettings;
+        private System.Windows.Forms.ToolStripMenuItem loadROMToolStripMenuItem;
     }
 }
 

@@ -17,14 +17,6 @@ namespace MidwayCore
         /// </summary>
         const int WaterFlag = 0x4000;
         /// <summary>
-        /// The total amount of levels in SMW.
-        /// </summary>
-        const int maxLevels = 96;
-        /// <summary>
-        /// The total amount of midway points you can have per level.
-        /// </summary>
-        const int maxMidways = 256;
-        /// <summary>
         /// The header of a MMP file.
         /// </summary>
         const string MmpHeader = "MMP";
@@ -39,7 +31,15 @@ namespace MidwayCore
         /// <summary>
         /// The bugfix version of Midway.dll (stored in each .mmp file). Useful to maintain backwards compatibility with old midway point files.
         /// </summary>
-        const byte BugfixVersion = 0;
+        const byte BugfixVersion = 1;
+        /// <summary>
+        /// The total amount of levels in SMW.
+        /// </summary>
+        const int maxLevels = 96;
+        /// <summary>
+        /// The total amount of midway points you can have per level.
+        /// </summary>
+        const int maxMidways = 256;
         #endregion
 
         #region Constructors
@@ -166,7 +166,7 @@ namespace MidwayCore
         public void ConvertFromBytes(byte[] input, int major = MajorVersion, int minor = MinorVersion, int bugfix = BugfixVersion)
         {
             if (input.Length != 4) throw new ArgumentException("Each midway point takes exactly four bytes.");
-            Destination = (input[0] << 0) | (input[1] << 16);
+            Destination = (input[0] << 0) | (input[1] << 8);
             Secondary = input[2] != 0;
             Water = input[3] != 0 && Secondary;
             Destination &= Secondary ? 0x1fff : 0x01ff;
@@ -179,7 +179,7 @@ namespace MidwayCore
         {
             int value = Destination;
             value |= Secondary ? SecondaryFlag : 0;
-            value |= Water ? WaterFlag : 0;
+            value |= Water && Secondary ? WaterFlag : 0;
             return "$" + value.ToString("X4");
         }
         #endregion
@@ -235,7 +235,7 @@ namespace MidwayCore
 
             // Header stuff
             Array.Copy(data, iData, header, 0, 3);
-            if(Encoding.ASCII.GetString(header) != MmpHeader) throw new ArgumentException("This file is not a proper .mmp file.");
+            if (Encoding.ASCII.GetString(header) != MmpHeader) throw new ArgumentException("This file is not a proper .mmp file.");
             major = data[3];    //
             minor = data[4];    // Store version number to local variables.
             bugfix = data[5];   //
@@ -347,7 +347,7 @@ namespace MidwayCore
                 {
                     if (midways[i, j].IsEmpty()) break; // Only increment the counter until an empty midway point is reached.
                 }
-                maxIndex = j;   // Remember: If the loop is broken, the values are still kept as they are.
+                if (maxIndex < j) maxIndex = j;   // Remember: If the loop is broken, the values are still kept as they are.
             }
 
             if (maxIndex == 0)
@@ -363,7 +363,7 @@ namespace MidwayCore
                     // Header
                     writer.WriteLine("@includefrom multi_midway.asm");
                     writer.WriteLine();
-                    writer.WriteLine("!total_midpoints = $" + maxIndex.ToString("04X"));
+                    writer.WriteLine("!total_midpoints = $" + maxIndex.ToString("X04"));
                     writer.WriteLine();
                     writer.WriteLine("level_mid_tables:");
 

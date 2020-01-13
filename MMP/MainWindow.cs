@@ -17,11 +17,39 @@ namespace MMP
 {
     public partial class MainWindow : Form
     {
-        Midway[,] midways;
+        #region Constants
+        const string MmpAsm = "multi_midway_tables.asm";
+        #endregion
 
-        private int iLevel;
-        private int iMidway;
+        #region Private Variables
+        private Midway[,] midways;
 
+        private int iLevel = 0;
+        private int iMidway = 0;
+
+        private string mmpName = null;
+        private string romName = null;
+        private string directory;
+
+        private bool _unsaved;
+        #endregion
+
+        #region Private Fields
+        private bool UnsavedChanges
+        {
+            get
+            {
+                return _unsaved;
+            }
+            set
+            {
+                _unsaved = value;
+                Text = "MMP Tool" + (_unsaved ? "*" : "");
+            }
+        }
+        #endregion
+
+        #region Constructor
         public MainWindow()
         {
             InitializeComponent();
@@ -52,8 +80,13 @@ namespace MMP
             levelNum.ValueMember = "Value";
             levelNum.DataSource = levels;
 
+            // Taken straight from Vitor's UberASM code. >_>
             Directory.SetCurrentDirectory(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+            directory = Environment.CurrentDirectory + "\\";
+
+            UnsavedChanges = false;
         }
+        #endregion
 
         #region Private functions (non-form)
         /// <summary>
@@ -70,151 +103,316 @@ namespace MMP
             waterLevel.Checked = currentMidway.Water;
         }
         /// <summary>
-        /// Calls a <see cref="SaveFileDialog"/> and saves a .mmp file.
+        /// Removes any unnecessary midway points (see <see cref="Midway.CompressTable(ref Midway[,])"/> for more information) and sets the index to zero.
         /// </summary>
-        private void SaveMidwayPoints()
+        private void CompressTable()
         {
-            try
+            // Let's save some freespace!
+            Midway.CompressTable(ref midways);
+
+            // Set the midway point index to zero
+            iMidway = 0;
+            midwayNum.Value = 0;
+
+            // Now update the GUI
+            UpdateMidway();
+        }
+        /// <summary>
+        /// Resets the midway point table
+        /// </summary>
+        private void Reset()
+        {
+            for (int i = 0; i < 96; i++)
             {
-                if (saveMmpDialog.ShowDialog() == DialogResult.OK)
+                // Set the first value to the level number...
+                midways[i, 0].CalculateMidway(i);
+                for (int j = 1; j < 256; j++)
                 {
-                    File.WriteAllBytes(saveMmpDialog.FileName, Midway.ToBinary(midways));
+                    // . and clear out the rest
+                    midways[i, 0].CalculateMidway(0);
                 }
-            }
-            catch (ArgumentException ex)
-            {
-                MessageBox.Show("An error appeared when opening the midway point file: " + ex.Message);
             }
         }
         /// <summary>
-        /// Calls an <see cref="OpenFileDialog"/> and saves a .mmp file.
+        /// Opens up <see cref="saveMmpDialog"/> and saves the midway points either as a binary file or as a text file.
+        /// </summary>
+        /// <param name="saveAs">If true then force to open <see cref="saveMmpDialog"/></param>
+        private void SaveMidwayPoints(bool saveAs = false)
+        {
+            if (string.IsNullOrEmpty(mmpName) || saveAs)
+            {
+                if (saveMmpDialog.ShowDialog() != DialogResult.OK)
+                {
+                    return;
+                }
+                mmpName = saveMmpDialog.FileName;
+            }
+            string extension = Path.GetExtension(mmpName);
+            try
+            {
+                if (extension == ".asm" || extension == ".txt")
+                {
+                    SaveAsmTable(mmpName);
+                }
+                else
+                {
+                    SaveMmpFile(mmpName);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error appeared when saving the midway point file: " + ex.Message, "Couldn't save midway points", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        /// <summary>
+        /// Opens up <see cref="openMmpDialog"/> and saves the midway points either as a binary file or as a text file.
         /// </summary>
         private void LoadMidwayPoints()
         {
+            if (UnsavedChanges)
+            {
+                DialogResult result = MessageBox.Show("Warning, there are unsaved changes! Do you really want to overwrite the changes?", "Unsaved changes", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
+                switch (result)
+                {
+                    case DialogResult.Yes:
+                        bool unsaved = true;
+                        while (unsaved)
+                        {
+                            try
+                            {
+                                if (saveMmpDialog.ShowDialog() != DialogResult.OK)
+                                {
+                                    return;
+                                }
+                                string extension = Path.GetExtension(mmpName);
+                                if (extension == ".asm" || extension == ".txt")
+                                {
+                                    SaveAsmTable(mmpName);
+                                }
+                                else
+                                {
+                                    SaveMmpFile(mmpName);
+                                }
+                                unsaved = false;
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show("An error appeared when saving the midway point file: " + ex.Message, "Couldn't save midway points", MessageBoxButtons.OK, MessageBoxIcon.Error); ;
+                            }
+                        }
+                        break;
+                    case DialogResult.No:
+                        break;
+                    default:
+                        return;
+                }
+            }
+            if (openMmpDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    mmpName = openMmpDialog.FileName;
+                    string extension = Path.GetExtension(mmpName);
+                    if (extension == ".asm" || extension == ".txt")
+                    {
+                        LoadAsmTable(mmpName);
+                    }
+                    else
+                    {
+                        LoadMmpFile(mmpName);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("An error appeared when opening the midway point file: " + ex.Message, "Couldn't save midway points", MessageBoxButtons.OK, MessageBoxIcon.Error); ;
+                }
+            }
+        }
+        /// <summary>
+        /// Calls a <see cref="SaveFileDialog"/> and saves a .mmp file.
+        /// </summary>
+        private void SaveMmpFile(string filename)
+        {
             try
             {
-                if (openMmpDialog.ShowDialog() == DialogResult.OK)
-                {
-                    midways = Midway.FromBinary(File.ReadAllBytes(openMmpDialog.FileName));
-                    UpdateMidway();
-                }
+                File.WriteAllBytes(filename, Midway.ToBinary(midways));
+                UnsavedChanges = false;
+            }
+            catch (ArgumentException ex)
+            {
+                throw ex;
+            }
+            catch (IOException)
+            {
+                throw new IOException("The MMP file couldn't be written. Please check the permission.");
+            }
+        }
+        /// <summary>
+        /// Calls an <see cref="OpenFileDialog"/> and opens a .mmp file.
+        /// </summary>
+        private void LoadMmpFile(string filename)
+        {
+            try
+            {
+                midways = Midway.FromBinary(File.ReadAllBytes(filename));
+                UpdateMidway();
+                UnsavedChanges = false;
             }
             catch (ArgumentException ex)
             {
                 MessageBox.Show("An error appeared when saving the midway point file: " + ex.Message);
             }
-            finally
-            {
-                UpdateMidway();
-            }
         }
         /// <summary>
-        /// Calls an <see cref="SaveFileDialog"/> and exports the table as an ASM file.
+        /// Calls a <see cref="SaveFileDialog"/> and exports the table as an ASM file.
         /// </summary>
-        private void ExportAsmTable()
+        private void SaveAsmTable(string filename)
         {
             try
             {
-                // Let's save some freespace!
-                Midway.CompressTable(ref midways);
+                CompressTable();
+                Midway.ExportAsm(midways, new FileStream(filename, FileMode.Create));
+                UnsavedChanges = false;
                 UpdateMidway();
-
-                // Set the midway point index to zero
-                iMidway = 0;
-                midwayNum.Value = 0;
-
-                // Now we save the midway points
-                if (exportAsmDialog.ShowDialog() == DialogResult.OK)
-                {
-                    Midway.ExportAsm(midways, exportAsmDialog.OpenFile());
-                }
 
             }
             catch (ArgumentException ex)
             {
-                MessageBox.Show("An error appeared when exporting the ASM file: " + ex.Message);
+                MessageBox.Show("An error appeared when exporting the ASM file: " + ex.Message, "Couldn't export table", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (IOException)
+            {
+                MessageBox.Show("The ASM file couldn't be exported. Please check the permission.", "Couldn't export table", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         /// <summary>
         /// Calls an <see cref="OpenFileDialog"/> and exports the table as an ASM file.
         /// </summary>
-        private void ImportAsmTable()
+        private void LoadAsmTable(string filename)
         {
             try
             {
-                if (importAsmDialog.ShowDialog() == DialogResult.OK)
-                {
-                    midways = Midway.ImportAsm(importAsmDialog.OpenFile());
-                    UpdateMidway();
-                }
+                midways = Midway.ImportAsm(new FileStream(filename, FileMode.Open));
+                UpdateMidway();
             }
             catch (ArgumentException ex)
             {
-                MessageBox.Show("An error appeared when importing the ASM file: " + ex.Message);
+                MessageBox.Show("An error appeared when importing the ASM file: " + ex.Message, "Couldn't import the table", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         /// <summary>
-        /// Picks a ROM through an <see cref="OpenFileDialog"/> and patch multi_midway.asm.
+        /// Opens up an <see cref="OpenFileDialog"/> and get the ROM name (it doesn't actually open it).
         /// </summary>
-        private void PatchRom()
+        private void LoadRom()
         {
+            if (patchRomDialog.ShowDialog() == DialogResult.OK)
+            {
+                romName = patchRomDialog.FileName;
+            }
+            return;
+        }
+        /// <summary>
+        /// Picks a ROM through a <see cref="SaveFileDialog"/> if not specified (or forced) and patch multi_midway.asm.
+        /// </summary>
+        private void PatchRom(bool saveAs = false)
+        {
+            try
+            {
+                // Similar as in ExportAsmTable(): Compress the tables first.
+                CompressTable();
+
+                // Now we save the midway points with a fixed name.
+                Midway.ExportAsm(midways, new FileStream(directory + MmpAsm, FileMode.Create));
+                UnsavedChanges = false;
+            }
+            catch
+            {
+                MessageBox.Show("Cannot create multi_midway_table.asm. Please check the file's permission or whether it's already in use.", "Cannot create " + MmpAsm, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             if (Asar.init())
             {
-                if (patchRomDialog.ShowDialog() == DialogResult.OK)
+                Asar.reset();
+                if (string.IsNullOrEmpty(romName) || saveAs)
                 {
-                    try
+                    if (patchRomDialog.ShowDialog() != DialogResult.OK)
                     {
-                        byte[] rom = File.ReadAllBytes(patchRomDialog.FileName);
+                        return;
+                    }
+                    romName = patchRomDialog.FileName;
+                }
 
-                        if (Asar.patch("multi_midway.asm", ref rom))
+                try
+                {
+                    // Remember that Asar expects headerless ROMs.
+                    // The code seperates the raw data from the header.
+                    byte[] fullRom = File.ReadAllBytes(patchRomDialog.FileName);
+
+                    int lHeader = fullRom.Length & 0x7fff;
+                    byte[] header = new byte[lHeader];
+                    byte[] rom = new byte[fullRom.Length - lHeader];
+                    Array.Copy(fullRom, 0, header, 0, lHeader);
+                    Array.Copy(fullRom, lHeader, rom, 0, fullRom.Length - lHeader);
+
+                    // Patching starts...
+                    if (Asar.patch(directory + "multi_midway.asm", ref rom))
+                    {
+                        try
                         {
-                            try
-                            {
-                                File.WriteAllBytes(patchRomDialog.FileName, rom);
-                            }
-                            catch (IOException ex)
-                            {
-                                MessageBox.Show("An error appeared when patching Multiple Midway Points: " + ex, "ROM couldn't be written", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                Asar.close();
-                                return;
-                            }
-                            StringBuilder warnings = new StringBuilder();
-                            foreach (var warning in Asar.getwarnings())
-                            {
-                                warnings.AppendLine(warning.Fullerrdata);
-                            }
-                            using (LongMessage message = new LongMessage("Multiple Midway Points has been inserted successfully. It uses " + Asar.getprints()[0] + " bytes of freespace.\nThe following warnings appeared:\n" + warnings.ToString(), "Patching successful"))
-                            {
-                                message.ShowDialog(this);
-                            }
+                            // Now it's time to merge them back.
+                            fullRom = new byte[rom.Length + lHeader];
+                            Array.Copy(header, 0, fullRom, 0, lHeader);
+                            Array.Copy(rom, 0, fullRom, lHeader, rom.Length);
+
+                            File.WriteAllBytes(patchRomDialog.FileName, fullRom);
                         }
-                        else
+                        catch (IOException ex)
                         {
-                            MessageBox.Show("An error appeared when patching Multiple Midway Points. See mmp.log for more information.", "ROM couldn't be patched", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            using (FileStream stream = new FileStream("mmp.log", FileMode.Create))
+                            MessageBox.Show("An error appeared when patching Multiple Midway Points: " + ex.Message, "ROM couldn't be written", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            Asar.close();
+                            return;
+                        }
+                        StringBuilder warningBuilder = new StringBuilder();
+                        foreach (var warning in Asar.getwarnings())
+                        {
+                            warningBuilder.AppendLine(warning.Fullerrdata);
+                        }
+                        string warnings = warningBuilder.ToString();
+                        string fullWarning = !string.IsNullOrEmpty(warnings) ? "The following warnings appeared:\n" + warnings : "";
+                        using (LongMessage message = new LongMessage("Multiple Midway Points has been inserted successfully. It uses " + Asar.getprints()[0] + " bytes of freespace.\n" + fullWarning, "Patching successful"))
+                        {
+                            message.ShowDialog(this);
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("An error appeared when patching Multiple Midway Points. See mmp.log for more information.", "ROM couldn't be patched", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        using (FileStream stream = new FileStream("mmp.log", FileMode.Create))
+                        {
+                            using (StreamWriter writer = new StreamWriter(stream))
                             {
-                                using (StreamWriter writer = new StreamWriter(stream))
+                                foreach (var warning in Asar.getwarnings())
                                 {
-                                    foreach (var warning in Asar.getwarnings())
-                                    {
-                                        writer.WriteLine(warning.Fullerrdata);
-                                    }
-                                    foreach (var error in Asar.geterrors())
-                                    {
-                                        writer.WriteLine(error.Fullerrdata);
-                                    }
+                                    writer.WriteLine(warning.Fullerrdata);
+                                }
+                                foreach (var error in Asar.geterrors())
+                                {
+                                    writer.WriteLine(error.Fullerrdata);
                                 }
                             }
                         }
                     }
-                    catch (IOException ex)
-                    {
-                        MessageBox.Show("An error appeared when patching Multiple Midway Points: " + ex, "ROM couldn't be opened", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
-                    }
-
                 }
-                Asar.close();
+                catch (IOException ex)
+                {
+                    MessageBox.Show("An error appeared when patching Multiple Midway Points: " + ex.Message, "ROM couldn't be opened", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                finally
+                {
+                    Asar.close();
+                }
             }
             else
             {
@@ -229,12 +427,14 @@ namespace MMP
             midwayNum.Value = 0;
             iLevel = (int)levelNum.SelectedValue;
             iMidway = 0;
+            UnsavedChanges = true;
             UpdateMidway();
         }
 
         private void midwayNum_ValueChanged(object sender, EventArgs e)
         {
             iMidway = (int)((NumericUpDown)sender).Value;
+            UnsavedChanges = true;
             UpdateMidway();
         }
         #endregion
@@ -243,6 +443,7 @@ namespace MMP
         private void destinationIndex_ValueChanged(object sender, EventArgs e)
         {
             midways[iLevel, iMidway].Destination = (int)((NumericUpDown)sender).Value;
+            UnsavedChanges = true;
             UpdateMidway();
         }
 
@@ -254,33 +455,31 @@ namespace MMP
             waterLevel.Enabled = checkBox.Checked;
             destinationIndex.Maximum = secondaryLevel.Checked ? 0x1fff : 0x01ff;
             if (destinationIndex.Value > destinationIndex.Value) destinationIndex.Value = destinationIndex.Maximum;
+            UnsavedChanges = true;
+            UpdateMidway();
         }
 
         private void waterLevel_CheckedChanged(object sender, EventArgs e)
         {
             midways[iLevel, iMidway].Water = waterLevel.Checked;
+            UnsavedChanges = true;
+            UpdateMidway();
         }
         #endregion
 
         #region Private Functions (form, tool strip)
-        private void openToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            LoadMidwayPoints();
-        }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveMidwayPoints();
         }
-
-        private void importToolStripMenuItem_Click(object sender, EventArgs e)
+        private void saveMidwayPointsAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ImportAsmTable();
+            SaveMidwayPoints(true);
         }
-
-        private void exportToolStripMenuItem_Click(object sender, EventArgs e)
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ExportAsmTable();
+            LoadMidwayPoints();
         }
 
         private void patchROMToolStripMenuItem_Click(object sender, EventArgs e)
@@ -300,12 +499,17 @@ namespace MMP
                 message.ShowDialog(this);
             }
         }
+
+        private void resetToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Reset();
+        }
         #endregion
 
         #region Private Functions (form, buttons)
         private void saveSettings_Click(object sender, EventArgs e)
         {
-            SaveMidwayPoints();
+            SaveMidwayPoints((ModifierKeys & Keys.Shift) == Keys.Shift);
         }
 
         private void loadSettings_Click(object sender, EventArgs e)
@@ -313,19 +517,60 @@ namespace MMP
             LoadMidwayPoints();
         }
 
-        private void exportASM_Click(object sender, EventArgs e)
-        {
-            ExportAsmTable();
-        }
-
-        private void importASM_Click(object sender, EventArgs e)
-        {
-            ImportAsmTable();
-        }
-
         private void patchRom_Click(object sender, EventArgs e)
         {
-            PatchRom();
+            PatchRom((ModifierKeys & Keys.Shift) == Keys.Shift);
+        }
+        private void loadROM_Click(object sender, EventArgs e)
+        {
+            LoadRom();
+        }
+        #endregion
+
+        #region Private Functions (Special)
+        private void MainWindow_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (UnsavedChanges)
+            {
+                DialogResult result = MessageBox.Show("You have got unsaved changes? Would you like to save the midway points first?", "Unsaved changes", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
+                switch (result)
+                {
+                    case DialogResult.Yes:
+                        bool unsaved = true;
+                        while (unsaved)
+                        {
+                            try
+                            {
+                                if (saveMmpDialog.ShowDialog() != DialogResult.OK)
+                                {
+                                    e.Cancel = true;
+                                    return;
+                                }
+                                string fileName = saveMmpDialog.FileName;
+                                string extension = Path.GetExtension(fileName);
+                                if (extension == ".asm" || extension == ".txt")
+                                {
+                                    SaveAsmTable(fileName);
+                                }
+                                else
+                                {
+                                    SaveMmpFile(fileName);
+                                }
+                                unsaved = false;
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show("An error appeared when saving the midway point file: " + ex.Message, "Couldn't save midway points", MessageBoxButtons.OK, MessageBoxIcon.Error); ;
+                            }
+                        }
+                        break;
+                    case DialogResult.No:
+                        break;
+                    default:
+                        e.Cancel = true;
+                        return;
+                }
+            }
         }
         #endregion
     }

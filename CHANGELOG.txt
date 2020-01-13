@@ -1,0 +1,11 @@
+C3 release (v0.9.0):
+ - Initial release
+
+Full release (v1.0.0):
+ - Release to the SMWCentral tools section
+ - Added headered ROM support (an easy pitfall in Asar.dll)
+ - Make the path to multiple_midway_points.asm absolute (also an easy pitfall)
+ - Fixed loading and generation of tables
+ - Added "Save as..." and the like
+ - Allows you to load the ROM
+ - Bugfixes

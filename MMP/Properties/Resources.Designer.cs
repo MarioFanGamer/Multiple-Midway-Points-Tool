@@ -61,7 +61,7 @@ namespace MMP.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Multiple Midway Points Tool (Version 1.0.0)
+        ///   Sucht eine lokalisierte Zeichenfolge, die Multiple Midway Points Tool (Version 1.0.1)
         ///
         ///Created by Manuel B. aka MarioFanGamer
         ///

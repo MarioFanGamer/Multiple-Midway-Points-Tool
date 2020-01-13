@@ -19,5 +19,10 @@ namespace MMP
             messageBox.Text = message;
             this.Text = title;
         }
+
+        private void buttonOK_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
     }
 }
