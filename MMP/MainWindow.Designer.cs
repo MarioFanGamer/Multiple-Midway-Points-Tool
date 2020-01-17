@@ -97,63 +97,71 @@
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
+            this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(327, 22);
             this.saveToolStripMenuItem.Text = "&Save Midway Points";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // saveMidwayPointsAsToolStripMenuItem
             // 
             this.saveMidwayPointsAsToolStripMenuItem.Name = "saveMidwayPointsAsToolStripMenuItem";
-            this.saveMidwayPointsAsToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
+            this.saveMidwayPointsAsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.S)));
+            this.saveMidwayPointsAsToolStripMenuItem.Size = new System.Drawing.Size(327, 22);
             this.saveMidwayPointsAsToolStripMenuItem.Text = "Save Midway Points as...";
             this.saveMidwayPointsAsToolStripMenuItem.Click += new System.EventHandler(this.saveMidwayPointsAsToolStripMenuItem_Click);
             // 
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
+            this.openToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(327, 22);
             this.openToolStripMenuItem.Text = "&Open Midway Points";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(199, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(324, 6);
             // 
             // loadROMToolStripMenuItem
             // 
             this.loadROMToolStripMenuItem.Name = "loadROMToolStripMenuItem";
-            this.loadROMToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
+            this.loadROMToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L)));
+            this.loadROMToolStripMenuItem.Size = new System.Drawing.Size(327, 22);
             this.loadROMToolStripMenuItem.Text = "Load ROM";
             // 
             // patchROMToolStripMenuItem
             // 
             this.patchROMToolStripMenuItem.Name = "patchROMToolStripMenuItem";
-            this.patchROMToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
+            this.patchROMToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
+            this.patchROMToolStripMenuItem.Size = new System.Drawing.Size(327, 22);
             this.patchROMToolStripMenuItem.Text = "Patch to ROM";
             this.patchROMToolStripMenuItem.Click += new System.EventHandler(this.patchROMToolStripMenuItem_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(199, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(324, 6);
             // 
             // resetToolStripMenuItem
             // 
             this.resetToolStripMenuItem.Name = "resetToolStripMenuItem";
-            this.resetToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
+            this.resetToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R)));
+            this.resetToolStripMenuItem.Size = new System.Drawing.Size(327, 22);
             this.resetToolStripMenuItem.Text = "Reset";
             this.resetToolStripMenuItem.Click += new System.EventHandler(this.resetToolStripMenuItem_Click);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(199, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(324, 6);
             // 
             // quitToolStripMenuItem
             // 
             this.quitToolStripMenuItem.Name = "quitToolStripMenuItem";
-            this.quitToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
+            this.quitToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
+            this.quitToolStripMenuItem.Size = new System.Drawing.Size(327, 22);
             this.quitToolStripMenuItem.Text = "&Quit";
             this.quitToolStripMenuItem.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
             // 
@@ -196,7 +204,7 @@
             0});
             this.destinationIndex.Name = "destinationIndex";
             this.destinationIndex.Size = new System.Drawing.Size(200, 20);
-            this.destinationIndex.TabIndex = 5;
+            this.destinationIndex.TabIndex = 3;
             this.destinationIndex.ValueChanged += new System.EventHandler(this.destinationIndex_ValueChanged);
             // 
             // waterLevel
@@ -206,7 +214,7 @@
             this.waterLevel.Location = new System.Drawing.Point(65, 82);
             this.waterLevel.Name = "waterLevel";
             this.waterLevel.Size = new System.Drawing.Size(84, 17);
-            this.waterLevel.TabIndex = 2;
+            this.waterLevel.TabIndex = 5;
             this.waterLevel.Text = "Water Level";
             this.waterLevel.UseVisualStyleBackColor = true;
             this.waterLevel.CheckedChanged += new System.EventHandler(this.waterLevel_CheckedChanged);
@@ -217,7 +225,7 @@
             this.secondaryLevel.Location = new System.Drawing.Point(67, 59);
             this.secondaryLevel.Name = "secondaryLevel";
             this.secondaryLevel.Size = new System.Drawing.Size(77, 17);
-            this.secondaryLevel.TabIndex = 1;
+            this.secondaryLevel.TabIndex = 4;
             this.secondaryLevel.Text = "Secondary";
             this.secondaryLevel.UseVisualStyleBackColor = true;
             this.secondaryLevel.CheckedChanged += new System.EventHandler(this.secondaryLevel_CheckedChanged);
@@ -254,7 +262,7 @@
             this.saveSettings.Location = new System.Drawing.Point(123, 178);
             this.saveSettings.Name = "saveSettings";
             this.saveSettings.Size = new System.Drawing.Size(105, 23);
-            this.saveSettings.TabIndex = 3;
+            this.saveSettings.TabIndex = 7;
             this.saveSettings.Text = "Save Settings";
             this.saveSettings.UseVisualStyleBackColor = true;
             this.saveSettings.Click += new System.EventHandler(this.saveSettings_Click);
@@ -264,7 +272,7 @@
             this.patchRom.Location = new System.Drawing.Point(123, 207);
             this.patchRom.Name = "patchRom";
             this.patchRom.Size = new System.Drawing.Size(105, 23);
-            this.patchRom.TabIndex = 3;
+            this.patchRom.TabIndex = 9;
             this.patchRom.Text = "Patch ROM";
             this.patchRom.UseVisualStyleBackColor = true;
             this.patchRom.Click += new System.EventHandler(this.patchRom_Click);
@@ -276,7 +284,7 @@
             this.levelNum.Location = new System.Drawing.Point(12, 40);
             this.levelNum.Name = "levelNum";
             this.levelNum.Size = new System.Drawing.Size(105, 21);
-            this.levelNum.TabIndex = 4;
+            this.levelNum.TabIndex = 1;
             this.levelNum.SelectedIndexChanged += new System.EventHandler(this.levelNum_SelectedIndexChanged);
             // 
             // midwayNum
@@ -285,7 +293,7 @@
             this.midwayNum.Location = new System.Drawing.Point(124, 40);
             this.midwayNum.Name = "midwayNum";
             this.midwayNum.Size = new System.Drawing.Size(103, 20);
-            this.midwayNum.TabIndex = 5;
+            this.midwayNum.TabIndex = 2;
             this.midwayNum.ValueChanged += new System.EventHandler(this.midwayNum_ValueChanged);
             // 
             // saveMmpDialog
@@ -322,7 +330,7 @@
             this.loadROM.Location = new System.Drawing.Point(12, 207);
             this.loadROM.Name = "loadROM";
             this.loadROM.Size = new System.Drawing.Size(105, 23);
-            this.loadROM.TabIndex = 7;
+            this.loadROM.TabIndex = 8;
             this.loadROM.Text = "Load ROM";
             this.loadROM.UseVisualStyleBackColor = true;
             this.loadROM.Click += new System.EventHandler(this.loadROM_Click);
@@ -332,7 +340,7 @@
             this.loadSettings.Location = new System.Drawing.Point(12, 178);
             this.loadSettings.Name = "loadSettings";
             this.loadSettings.Size = new System.Drawing.Size(105, 23);
-            this.loadSettings.TabIndex = 8;
+            this.loadSettings.TabIndex = 6;
             this.loadSettings.Text = "Load Settings";
             this.loadSettings.UseVisualStyleBackColor = true;
             this.loadSettings.Click += new System.EventHandler(this.loadSettings_Click);
